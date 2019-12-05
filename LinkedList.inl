@@ -3,19 +3,25 @@
 using namespace std;
 
 template <typename K,typename V, typename H>
-List<K,V,H>::List (size_t capacity){
-    head = NULL;
+List<K,V,H>::List(size_t capacity){
+    hashArr = new Node<K, V> *[capacity]();
+    for(int i=0 ; i < capacity ; i++)
+        hashArr[i] = NULL;
     this->capacity = capacity;
 }
 
 template <typename K,typename V, typename H>
 List<K,V,H>::~List(){
-    Node<K,V> *cur;
-    while (head != NULL){
-        cur = head;
-        head = cur->next;
-        delete(cur);
+    for (int i = 0; i < capacity; ++i) {
+        Node<K, V> *entry = hashArr[i];
+        while (entry != NULL) {
+            Node<K, V> *prev = entry;
+            entry = entry->next;
+            delete prev;
+        }
+        hashArr[i] = NULL;
     }
+    delete [] hashArr;
     
 }
 
@@ -28,55 +34,73 @@ size_t List<K,V,H>::customHash(K key){
 
 template <typename K,typename V, typename H>
 int List<K,V,H>::remove(K key){
-    Node<K,V> *cur = head;
-    Node<K,V> *prev = NULL;
-    while (cur != NULL && cur->key != key){
+    size_t hashIndex = customHash(key);
+    Node<K, V> *prev = NULL;
+    Node<K, V> *cur = hashArr[hashIndex];
+
+    while (cur != NULL && cur->key != key) {
         prev = cur;
         cur = cur->next;
     }
-    if(cur == NULL)
+
+    if (cur == NULL)
         return KEY_NOT_FOUND;
-    if(prev == NULL)
-        head = cur->next;
-    else
+    
+    if (prev == NULL) {
+        hashArr[hashIndex] = cur->next;
+    } else {
         prev->next = cur->next;
-    delete (cur);
+    }
+    delete cur;
     return REMOVE_SUCCESS;
 }
 
 template <typename K,typename V, typename H>
 int List<K,V,H>::insert(K key, V value){
-    customHash(key);
-    Node<K,V> *cur = head;
-
-    while (cur != NULL){
-        if (cur->key == key){
-            cur->value = value;
-            return UPDATE_VALUE_SUCCESS;
+    size_t hashIndex = customHash(key);
+    Node<K,V> *prev = NULL;
+    Node<K,V> *cur = hashArr[hashIndex];
+    while (cur != NULL && cur->key != key) {
+        prev = cur;
+        cur = cur->next;
+    }
+    if (cur == NULL) {
+        cur = new Node<K, V>(key, value);
+        if (prev == NULL) {
+            hashArr[hashIndex] = cur;
+        } else {
+            prev->next = cur;
         }
-        cur = cur->next;
+        return INSERT_SUCCESS;
     }
-    cur = new Node<K,V>(key, value);
-    cur->next = head;
-    head = cur;
-    return INSERT_SUCCESS;
+    cur->value = value;
+    return UPDATE_VALUE_SUCCESS;
 }
 
-template <typename K,typename V, typename H>
-void List<K,V,H>::printList(){
-    Node<K,V> *cur = head;
-    while (cur != NULL){
-        cout << cur->key << ":" << cur->value << " -> ";
-        cur = cur->next;
-    }
-    cout << "NULL\n";
-}
 
 template <typename K,typename V, typename H>
 Node<K,V> * List<K,V,H>::get(K key){
-    Node<K,V> *cur = head;
-    while (cur != NULL && cur->key != key){
+    
+    size_t hashIndex = customHash(key);
+    Node<K, V> *cur = hashArr[hashIndex];
+    while (cur != NULL) {
+        if (cur->key == key) {
+            return cur;
+        }
         cur = cur->next;
     }
     return cur;
+}
+
+template <typename K,typename V, typename H>
+void List<K,V,H>::display(){
+    for(int i=0 ; i<capacity ; i++){
+        if(hashArr[i] != NULL){
+            Node<K,V> *cur = hashArr[i];
+            while(cur != NULL){
+                cout << "key = " << cur->key <<"  value = "<< cur->value << endl;
+                cur = cur->next;
+            }
+        }
+    }
 }

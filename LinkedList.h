@@ -39,15 +39,17 @@ template <typename K,typename V , typename H >
 class List
 {
 private:
-    Node<K,V> *head;
+    Node<K, V> **hashArr;
     size_t capacity;
+    size_t size=0;
+    
 public:
     List(size_t capacity);
     ~List();
     int insert(K key, V value);
     int remove(K key);
-    void printList ();
     size_t customHash(K key);
+    void display();
     Node<K,V> * get(K key);
 };
 

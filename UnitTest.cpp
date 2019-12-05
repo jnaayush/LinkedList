@@ -21,7 +21,6 @@ void UnitTest::TestInsertRemoveFunction(){
             assert(c == n->getKey());
             assert(c == n->getValue());
         }
-        
         //removing in same order
         for(char c = 'a'; c <= 'z'; c++){
             assert(REMOVE_SUCCESS == l->remove(c));
@@ -58,13 +57,15 @@ void UnitTest::TestNodeUpdationOnInsert(){
         assert(INSERT_SUCCESS == lI->insert(1,10));
         assert(INSERT_SUCCESS == lI->insert(2,20));
         assert(INSERT_SUCCESS == lI->insert(3,30));
-        
+        lI->display();
+        cout << "After Update\n";
         assert(UPDATE_VALUE_SUCCESS == lI->insert(1,100));
         assert(100 == lI->get(1)->getValue());
         assert(UPDATE_VALUE_SUCCESS == lI->insert(2,200));
         assert(200 == lI->get(2)->getValue());
         assert(UPDATE_VALUE_SUCCESS == lI->insert(3,300));
         assert(300 == lI->get(3)->getValue());
+        lI->display();
         cout << "Node update Passed\n";
     } catch(...) {
         cout << "Node update failed\n";
@@ -107,9 +108,9 @@ void UnitTest::TestListOfClass(){
         p3.firstName = "P.";
         p3.lastName = "Gopichand";
         
-//        assert(INSERT_SUCCESS == lSP->insert("Basketball",p1));
-//        assert(INSERT_SUCCESS == lSP->insert("Cricket",p2));
-//        assert(INSERT_SUCCESS == lSP->insert("Badminton",p3));
+        assert(INSERT_SUCCESS == lSP->insert("Basketball",p1));
+        assert(INSERT_SUCCESS == lSP->insert("Cricket",p2));
+        assert(INSERT_SUCCESS == lSP->insert("Badminton",p3));
         
         List<Person, string, PersonHash> *lPP = new List<Person, string, PersonHash >(100);
         assert(INSERT_SUCCESS == lPP->insert(p1,"Golf"));
