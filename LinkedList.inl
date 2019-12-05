@@ -77,20 +77,6 @@ int List<K,V,H>::insert(K key, V value){
 
 
 template <typename K,typename V, typename H>
-Node<K,V> * List<K,V,H>::get(K key){
-    
-    size_t hashIndex = customHash(key);
-    Node<K, V> *cur = hashArr[hashIndex];
-    while (cur != NULL) {
-        if (cur->key == key) {
-            return cur;
-        }
-        cur = cur->next;
-    }
-    return cur;
-}
-
-template <typename K,typename V, typename H>
 void List<K,V,H>::display(){
     for(int i=0 ; i < arrSize ; i++){
         if(hashArr[i] != NULL){

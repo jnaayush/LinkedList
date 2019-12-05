@@ -18,15 +18,11 @@ void UnitTest::TestInsertRemoveFunction(){
         //Inserting key,values
         for(char c = 'a'; c <= 'p'; c++){
             assert(INSERT_SUCCESS == l->insert(c,c));
-            Node<char,char> *n = l->get(c);
-            assert(c == n->getKey());
-            assert(c == n->getValue());
         }
         l->display();
         //removing in same order
         for(char c = 'a'; c <= 'p'; c++){
             assert(REMOVE_SUCCESS == l->remove(c));
-            assert(NULL == l->get(c));
         }
         
         //Inserting key,values
@@ -36,7 +32,6 @@ void UnitTest::TestInsertRemoveFunction(){
         //removing in reverse order
         for(char c = 'p'; c >= 'a'; c--){
             assert(REMOVE_SUCCESS == l->remove(c));
-            assert(NULL == l->get(c));
         }
         delete(l);
         cout << "Insert and Remove Test Passed\n";
@@ -73,11 +68,8 @@ void UnitTest::TestNodeUpdationOnInsert(){
         lI->display();
         cout << "After Update\n";
         assert(UPDATE_VALUE_SUCCESS == lI->insert(1,100));
-        assert(100 == lI->get(1)->getValue());
         assert(UPDATE_VALUE_SUCCESS == lI->insert(2,200));
-        assert(200 == lI->get(2)->getValue());
         assert(UPDATE_VALUE_SUCCESS == lI->insert(3,300));
-        assert(300 == lI->get(3)->getValue());
         lI->display();
         cout << "Node update Passed\n";
     } catch(...) {
@@ -127,15 +119,8 @@ void UnitTest::TestListOfClass(){
         
         List<Person, string, PersonHash> *lPP = new List<Person, string, PersonHash >();
         assert(INSERT_SUCCESS == lPP->insert(p1,"Golf"));
-        string sport;
-        if(lPP->get(p1) != NULL)
-            sport = lPP->get(p1)->getValue();
-        assert("Golf" ==  sport);
         assert(INSERT_SUCCESS == lPP->insert(p2,"Cricket"));
         assert(UPDATE_VALUE_SUCCESS == lPP->insert(p1,"BasketBall"));
-        if(lPP->get(p1) != NULL)
-            sport = lPP->get(p1)->getValue();
-        assert("BasketBall" ==  sport);
         
         cout << "Custom Class Key Value Passed\n";
     } catch(...) {

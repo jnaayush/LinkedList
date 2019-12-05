@@ -49,7 +49,6 @@ public:
     int remove(K key);
     size_t customHash(K key);
     void display();
-    Node<K,V> * get(K key);
 };
 
 #endif
