@@ -1,13 +1,15 @@
 #include "LinkedList.h"
+#include <functional>
 using namespace std;
 
-template <typename K,typename V>
-List<K,V>::List (){
+template <typename K,typename V, typename H>
+List<K,V,H>::List (size_t capacity){
     head = NULL;
+    this->capacity = capacity;
 }
 
-template <typename K,typename V>
-List<K,V>::~List(){
+template <typename K,typename V, typename H>
+List<K,V,H>::~List(){
     Node<K,V> *cur;
     while (head != NULL){
         cur = head;
@@ -17,8 +19,15 @@ List<K,V>::~List(){
     
 }
 
-template <typename K,typename V>
-int List<K,V>::remove(K key){
+template <typename K,typename V, typename H>
+size_t List<K,V,H>::customHash(K key){
+    H hashKey;
+    size_t h1 = hashKey(key);
+    return h1 % capacity;
+}
+
+template <typename K,typename V, typename H>
+int List<K,V,H>::remove(K key){
     Node<K,V> *cur = head;
     Node<K,V> *prev = NULL;
     while (cur != NULL && cur->key != key){
@@ -35,8 +44,9 @@ int List<K,V>::remove(K key){
     return REMOVE_SUCCESS;
 }
 
-template <typename K,typename V>
-int List<K,V>::insert(K key, V value){
+template <typename K,typename V, typename H>
+int List<K,V,H>::insert(K key, V value){
+    customHash(key);
     Node<K,V> *cur = head;
 
     while (cur != NULL){
@@ -52,8 +62,8 @@ int List<K,V>::insert(K key, V value){
     return INSERT_SUCCESS;
 }
 
-template <typename K,typename V>
-void List<K,V>::printList(){
+template <typename K,typename V, typename H>
+void List<K,V,H>::printList(){
     Node<K,V> *cur = head;
     while (cur != NULL){
         cout << cur->key << ":" << cur->value << " -> ";
@@ -62,8 +72,8 @@ void List<K,V>::printList(){
     cout << "NULL\n";
 }
 
-template <typename K,typename V>
-Node<K,V> * List<K,V>::get(K key){
+template <typename K,typename V, typename H>
+Node<K,V> * List<K,V,H>::get(K key){
     Node<K,V> *cur = head;
     while (cur != NULL && cur->key != key){
         cur = cur->next;

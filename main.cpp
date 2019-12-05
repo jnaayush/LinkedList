@@ -8,8 +8,8 @@
 int main (){
     UnitTest u;
     u.TestInsertRemoveFunction();
-    u.TestKeyValue();
-    u.TestNodeUpdationOnInsert();
+//    u.TestKeyValue();
+//    u.TestNodeUpdationOnInsert();
     u.TestListOfClass();
     return 0;
     

@@ -8,11 +8,12 @@
 
 
 using namespace std;
-template <typename K,typename V> class List;
+template <typename K,typename V,typename H = hash<K> > class List;
 template <typename K,typename V>
 class Node
 {
-    friend class List<K,V>;
+    template <typename K1,typename V1,typename H1>
+    friend class List;
     
 private:
     K key;
@@ -34,17 +35,19 @@ public:
     }
 };
 
-template <typename K,typename V>
+template <typename K,typename V , typename H >
 class List
 {
 private:
     Node<K,V> *head;
+    size_t capacity;
 public:
-    List();
+    List(size_t capacity);
     ~List();
     int insert(K key, V value);
     int remove(K key);
     void printList ();
+    size_t customHash(K key);
     Node<K,V> * get(K key);
 };
 
