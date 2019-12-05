@@ -1,5 +1,4 @@
 #include "LinkedList.h"
-#include <functional>
 using namespace std;
 
 template <typename K,typename V, typename H>
@@ -11,8 +10,7 @@ List<K,V,H>::List(){
 
 template <typename K,typename V, typename H>
 List<K,V,H>::~List(){
-    for (int i = 0; i < arrSize
-         ; ++i) {
+    for (int i = 0; i < arrSize; ++i) {
         Node<K, V> *entry = hashArr[i];
         while (entry != NULL) {
             Node<K, V> *prev = entry;

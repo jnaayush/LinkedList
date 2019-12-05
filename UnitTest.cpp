@@ -6,46 +6,58 @@ using namespace std;
 
 void UnitTest::TestInsertRemoveFunction(){
     try{
-        cout <<"\nTesting insert function with List<char,char> \n";
+        cout <<"\nTesting Insert and Remove functions with List<char,char>... \n";
         List<char,char> *l = new List<char,char>();
         
         // Deleting non existant key
         assert(KEY_NOT_FOUND == l->remove('a'));
-        for(char c = 'a'; c <= 'z'; c++){
+        for(char c = 'a'; c <= 'p'; c++){
             assert(KEY_NOT_FOUND == l->remove(c));
         }
         
         //Inserting key,values
-        for(char c = 'a'; c <= 'z'; c++){
+        for(char c = 'a'; c <= 'p'; c++){
             assert(INSERT_SUCCESS == l->insert(c,c));
             Node<char,char> *n = l->get(c);
             assert(c == n->getKey());
             assert(c == n->getValue());
         }
+        l->display();
         //removing in same order
-        for(char c = 'a'; c <= 'z'; c++){
+        for(char c = 'a'; c <= 'p'; c++){
+            assert(REMOVE_SUCCESS == l->remove(c));
+            assert(NULL == l->get(c));
+        }
+        
+        //Inserting key,values
+        for(char c = 'a'; c <= 'p'; c++){
+            assert(INSERT_SUCCESS == l->insert(c,c));
+        }
+        //removing in reverse order
+        for(char c = 'p'; c >= 'a'; c--){
             assert(REMOVE_SUCCESS == l->remove(c));
             assert(NULL == l->get(c));
         }
         delete(l);
         cout << "Insert and Remove Test Passed\n";
     } catch (...){
-        cout << "Insert Test Failed\n";
+        cout << "Insert and Remove Test failed\n";
     }
 }
 
 void UnitTest::TestKeyValue(){
     try{
-        cout<< "\nTesting key, value assignment\n";
+        cout<< "\nTesting node assignment...\n";
         Node<string,string> *sNode = new Node<string,string>("MATHWORKS","SIMULINK");
         
         //Test Key assignment
         assert(sNode->getKey() == "MATHWORKS");
-        
+        cout << sNode->getKey() << "\n";
         //Test Value assignment
         assert(sNode->getValue() == "SIMULINK");
+        cout << sNode->getValue() << "\n";
         
-        cout << "node assignment test Passed \n";
+        cout << "Node assignment test Passed \n";
     } catch(...){
         cout << "Node assignment test failed\n";
     }
@@ -53,7 +65,7 @@ void UnitTest::TestKeyValue(){
 
 void UnitTest::TestNodeUpdationOnInsert(){
     try{
-        cout << "\nTesting Node update\n";
+        cout << "\nTesting Node on inserting same key...\n";
         List<int,int> *lI = new List<int,int>();
         assert(INSERT_SUCCESS == lI->insert(1,10));
         assert(INSERT_SUCCESS == lI->insert(2,20));
@@ -75,7 +87,7 @@ void UnitTest::TestNodeUpdationOnInsert(){
 
 void UnitTest::TestListOfClass(){
     try{
-        cout << "\nTesting List of Custom Class\n";
+        cout << "\nTesting List of Custom Class...\n";
         class Person{
         public:
             string firstName;
@@ -91,7 +103,7 @@ void UnitTest::TestListOfClass(){
         public:
             size_t operator()(const Person& p) const
             {
-                return p.firstName.length() + p.lastName.length();
+                return hash<string>{}(p.firstName) ^ hash<string>{}(p.lastName);
             }
         };
             
@@ -115,11 +127,14 @@ void UnitTest::TestListOfClass(){
         
         List<Person, string, PersonHash> *lPP = new List<Person, string, PersonHash >();
         assert(INSERT_SUCCESS == lPP->insert(p1,"Golf"));
-        string sport = lPP->get(p1)->getValue();
+        string sport;
+        if(lPP->get(p1) != NULL)
+            sport = lPP->get(p1)->getValue();
         assert("Golf" ==  sport);
         assert(INSERT_SUCCESS == lPP->insert(p2,"Cricket"));
         assert(UPDATE_VALUE_SUCCESS == lPP->insert(p1,"BasketBall"));
-        sport = lPP->get(p1)->getValue();
+        if(lPP->get(p1) != NULL)
+            sport = lPP->get(p1)->getValue();
         assert("BasketBall" ==  sport);
         
         cout << "Custom Class Key Value Passed\n";

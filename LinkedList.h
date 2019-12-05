@@ -12,7 +12,7 @@ template <typename K,typename V,typename H = hash<K> > class List;
 template <typename K,typename V>
 class Node
 {
-    template <typename K1,typename V1,typename H1>
+    template <typename KL,typename VL,typename HL>
     friend class List;
     
 private:
@@ -41,7 +41,6 @@ class List
 private:
     Node<K, V> **hashArr;
     size_t arrSize = 128;
-    size_t size = 0;
     
 public:
     List();
