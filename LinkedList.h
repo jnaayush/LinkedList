@@ -40,11 +40,11 @@ class List
 {
 private:
     Node<K, V> **hashArr;
-    size_t capacity;
-    size_t size=0;
+    size_t arrSize = 128;
+    size_t size = 0;
     
 public:
-    List(size_t capacity);
+    List();
     ~List();
     int insert(K key, V value);
     int remove(K key);

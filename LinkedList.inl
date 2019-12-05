@@ -3,16 +3,16 @@
 using namespace std;
 
 template <typename K,typename V, typename H>
-List<K,V,H>::List(size_t capacity){
-    hashArr = new Node<K, V> *[capacity]();
-    for(int i=0 ; i < capacity ; i++)
+List<K,V,H>::List(){
+    hashArr = new Node<K, V> *[arrSize]();
+    for(int i=0 ; i < arrSize ; i++)
         hashArr[i] = NULL;
-    this->capacity = capacity;
 }
 
 template <typename K,typename V, typename H>
 List<K,V,H>::~List(){
-    for (int i = 0; i < capacity; ++i) {
+    for (int i = 0; i < arrSize
+         ; ++i) {
         Node<K, V> *entry = hashArr[i];
         while (entry != NULL) {
             Node<K, V> *prev = entry;
@@ -29,7 +29,7 @@ template <typename K,typename V, typename H>
 size_t List<K,V,H>::customHash(K key){
     H hashKey;
     size_t h1 = hashKey(key);
-    return h1 % capacity;
+    return h1 % arrSize;
 }
 
 template <typename K,typename V, typename H>
@@ -37,12 +37,12 @@ int List<K,V,H>::remove(K key){
     size_t hashIndex = customHash(key);
     Node<K, V> *prev = NULL;
     Node<K, V> *cur = hashArr[hashIndex];
-
+    
     while (cur != NULL && cur->key != key) {
         prev = cur;
         cur = cur->next;
     }
-
+    
     if (cur == NULL)
         return KEY_NOT_FOUND;
     
@@ -94,7 +94,7 @@ Node<K,V> * List<K,V,H>::get(K key){
 
 template <typename K,typename V, typename H>
 void List<K,V,H>::display(){
-    for(int i=0 ; i<capacity ; i++){
+    for(int i=0 ; i < arrSize ; i++){
         if(hashArr[i] != NULL){
             Node<K,V> *cur = hashArr[i];
             while(cur != NULL){

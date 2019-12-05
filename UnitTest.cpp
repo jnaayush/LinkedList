@@ -7,7 +7,8 @@ using namespace std;
 void UnitTest::TestInsertRemoveFunction(){
     try{
         cout <<"\nTesting insert function with List<char,char> \n";
-        List<char,char> *l = new List<char,char>(100);
+        List<char,char> *l = new List<char,char>();
+        
         // Deleting non existant key
         assert(KEY_NOT_FOUND == l->remove('a'));
         for(char c = 'a'; c <= 'z'; c++){
@@ -53,7 +54,7 @@ void UnitTest::TestKeyValue(){
 void UnitTest::TestNodeUpdationOnInsert(){
     try{
         cout << "\nTesting Node update\n";
-        List<int,int> *lI = new List<int,int>(100);
+        List<int,int> *lI = new List<int,int>();
         assert(INSERT_SUCCESS == lI->insert(1,10));
         assert(INSERT_SUCCESS == lI->insert(2,20));
         assert(INSERT_SUCCESS == lI->insert(3,30));
@@ -94,7 +95,7 @@ void UnitTest::TestListOfClass(){
             }
         };
             
-        List<string, Person > *lSP = new List<string, Person >(100);
+        List<string, Person > *lSP = new List<string, Person >();
             
         Person p1;
         p1.firstName = "Micheal";
@@ -112,7 +113,7 @@ void UnitTest::TestListOfClass(){
         assert(INSERT_SUCCESS == lSP->insert("Cricket",p2));
         assert(INSERT_SUCCESS == lSP->insert("Badminton",p3));
         
-        List<Person, string, PersonHash> *lPP = new List<Person, string, PersonHash >(100);
+        List<Person, string, PersonHash> *lPP = new List<Person, string, PersonHash >();
         assert(INSERT_SUCCESS == lPP->insert(p1,"Golf"));
         string sport = lPP->get(p1)->getValue();
         assert("Golf" ==  sport);
