@@ -41,13 +41,13 @@ class List
 private:
     Node<K, V> **hashArr;
     size_t arrSize = 128;
+    size_t customHash(K key);
     
 public:
     List();
     ~List();
     int insert(K key, V value);
     int remove(K key);
-    size_t customHash(K key);
     void display();
 };
 
